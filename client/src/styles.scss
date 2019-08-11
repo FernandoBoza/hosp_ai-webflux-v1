@@ -75,7 +75,8 @@ section.main {
 }
 
 h1,
-h3 {
+h3,
+h5 {
   font-family: $font_one, serif;
   font-weight: normal;
 }
@@ -110,7 +111,8 @@ h3 {
   font-size: 1.3rem;
 }
 
-.search_icon_input {
+search {
+  display: block;
   position: relative;
 
   i.fas.fa-search {
@@ -185,4 +187,29 @@ section.right-col.col {
   agm-map.sebm-google-map-container {
     height: 100%;
   }
+}
+
+hospital-results {
+  margin-top: 1.4rem;
+  display: block;
+
+  li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 1rem;
+    color: $blue;
+
+    i.fas.fa-hospital {
+      align-self: center;
+    }
+  }
+
+  .services-icon {
+    color: red;
+    cursor: pointer;
+  }
+}
+
+.remove {
+  display: none;
 }
