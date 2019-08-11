@@ -7,19 +7,18 @@
 </nav>
 <section class="main">
   <section class="left-col col">
-    <h1>Hospital services at a glance</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam corporis expedita minima omnis perspiciatis
+    <h1>{{title}}</h1>
+    <p [class.hide]="searchActive" class="intro">Lorem ipsum dolor sit amet, consectetur
+      adipisicing elit. Aperiam
+      corporis expedita
+      minima omnis perspiciatis
       quasi quibusdam quis reiciendis repellendus ut! Consequatur illo inventore ipsum iure nobis porro quasi reiciendis
       vitae.</p>
 
-    <div class="search_icon_input">
-      <i class="fas fa-search"></i>
-      <input type="text" placeholder="Search via zipcodes or services" class="home-search" [(ngModel)]="search"
-             (keydown.enter)="submitSearch()">
-      <button class="primary" (click)="submitSearch()"> Search</button>
-    </div>
 
-    <div class="wave_blocks">
+    <search [inputModel]="search" (searchFunction)="submitSearch($event)"></search>
+
+    <!-- <div class="wave_blocks" [class.hide]="searchActive">
       <div class="block blue">
         <p>Hospitals</p>
         <img src="../assets/blue.svg" alt="">
@@ -28,18 +27,14 @@
         <p>Services</p>
         <img src="../assets/purple.svg" alt="">
       </div>
-    </div>
+    </div> -->
+
+    <hospital-results></hospital-results>
 
   </section>
   <section class="right-col col">
-    <ul>
-      <li *ngFor="let hosp of hospitals">
-        {{hosp.name}}
-        {{hosp.address}}
-      </li>
-    </ul>
-<!--    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="15">-->
-<!--      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>-->
-<!--    </agm-map>-->
+    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="15">
+      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    </agm-map>
   </section>
 </section>

@@ -9,10 +9,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController // Controller and ResponseBody Annotations together
-@RequestMapping(HospitalController.HOSPITALS_V_1_HOSP) // Create a base string that the endpoint is built upon
+@RequestMapping("/hospitals/v1/hosp/") // Create a base string that the endpoint is built upon
 @CrossOrigin // For DEV Angular and Spring app locally REMOVE FOR PRODUCTION
 public class HospitalController {
-    public static final String HOSPITALS_V_1_HOSP = "/hospitals/v1/hosp/";
     private final HospitalService hospitalService;
 
     @Autowired

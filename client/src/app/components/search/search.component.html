@@ -1,0 +1,6 @@
+<div class="search_icon_input">
+  <i class="fas fa-search"></i>
+  <input type="text" placeholder="Search via zipcodes or services" class="home-search" [(ngModel)]="inputModel"
+    (keydown.enter)="submitSearch(inputModel)">
+  <button class="primary" (click)="submitSearch(inputModel)"> Search</button>
+</div>

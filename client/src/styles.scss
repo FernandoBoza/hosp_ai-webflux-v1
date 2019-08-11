@@ -1,15 +1,15 @@
 @import "app/scss/reset";
-@import url('https://fonts.googleapis.com/css?family=Raleway:400,500&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Raleway:400,500&display=swap");
 
 @font-face {
-  font-family: 'League Spartan Bold';
+  font-family: "League Spartan Bold";
   font-style: normal;
   font-weight: normal;
-  src: local('League Spartan Bold'), url('/assets/LeagueSpartan-Bold.woff') format('woff');
+  src: local("League Spartan Bold"), url("/assets/LeagueSpartan-Bold.woff") format("woff");
 }
 
-$font_one: 'League Spartan Bold';
-$font_two: 'Raleway';
+$font_one: "League Spartan Bold";
+$font_two: "Raleway";
 $blue: #0698ff;
 
 body {
@@ -32,7 +32,7 @@ nav {
     cursor: pointer;
   }
 
-  ul{
+  ul {
     display: grid;
     grid-template-columns: auto auto;
     grid-gap: 3rem;
@@ -44,7 +44,6 @@ nav {
       font-family: $font_one;
     }
   }
-
 }
 
 button.primary {
@@ -57,7 +56,7 @@ button.primary {
   color: white;
   font-family: $font_one;
   cursor: pointer;
-  transition: background .5s, box-shadow .5s;
+  transition: background 0.5s, box-shadow 0.5s;
   padding: 3px 2rem 0 2rem;
   font-size: 1rem;
   box-shadow: none;
@@ -75,17 +74,32 @@ section.main {
   height: 91%;
 }
 
-h1, h3 {
+h1,
+h3,
+h5 {
   font-family: $font_one, serif;
   font-weight: normal;
 }
 
-h1, h3, p {
+h1,
+h3,
+p {
   color: $blue;
 }
 
 p {
   line-height: 1.7;
+
+  &.intro {
+    max-height: 140px;
+    transition: max-height 0.6s, opacity 0.6s, margin-bottom 0.6s;
+    margin-bottom: 2rem;
+    &.hide {
+      max-height: 0;
+      opacity: 0;
+      margin-bottom: 0rem;
+    }
+  }
 }
 
 h1 {
@@ -97,10 +111,9 @@ h3 {
   font-size: 1.3rem;
 }
 
-
-.search_icon_input {
+search {
+  display: block;
   position: relative;
-  margin-top: 2rem;
 
   i.fas.fa-search {
     position: absolute;
@@ -122,13 +135,19 @@ h3 {
   }
 }
 
-
 .wave_blocks {
   width: 400px;
   display: grid;
   grid-gap: 2rem;
   margin-top: 4rem;
   grid-template-columns: 1fr 1fr;
+  transition: bottom 0.4s, opacity 0.4s;
+
+  &.hide {
+    position: relative;
+    bottom: -3rem;
+    opacity: 0;
+  }
 
   .block {
     position: relative;
@@ -137,13 +156,12 @@ h3 {
     img {
       box-shadow: none;
       border-radius: 18px;
-      transition: box-shadow .4s;
+      transition: box-shadow 0.4s;
 
       &:hover {
         box-shadow: 0px 7px 7px 2px #01385f40;
       }
     }
-
 
     p {
       font-family: $font_one;
@@ -160,7 +178,7 @@ section.right-col.col {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: none;
-  transition: box-shadow .4s;
+  transition: box-shadow 0.4s;
 
   &:hover {
     box-shadow: 0px 9px 7px 0px #00000040;
@@ -169,4 +187,29 @@ section.right-col.col {
   agm-map.sebm-google-map-container {
     height: 100%;
   }
+}
+
+hospital-results {
+  margin-top: 1.4rem;
+  display: block;
+
+  li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 1rem;
+    color: $blue;
+
+    i.fas.fa-hospital {
+      align-self: center;
+    }
+  }
+
+  .services-icon {
+    color: red;
+    cursor: pointer;
+  }
+}
+
+.remove {
+  display: none;
 }
