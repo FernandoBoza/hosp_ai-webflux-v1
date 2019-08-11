@@ -1,11 +1,13 @@
 <ul>
-  <li>
+  <li *ngFor="let hosp of results" (click)="selectHosp(hosp)">
     <i class="fas fa-hospital"></i>
     <div>
-      <h5 class="title">Mercy Hospital</h5>
-      <p class="address">123 Rd Place Miami Fl 33175</p>
-      <p class="phone">305 222 8797</p>
-      <p class="services-icon"><i class="fas fa-heartbeat"></i> Services</p>
+      <h5 class="title">{{hosp.name}}</h5>
+      <p class="address">{{hosp.address}} {{hosp.city}} {{hosp.state}} {{hosp.zipcode}}</p>
+      <p class="phone">
+        <a href="tel:{{hosp.phone}}">{{hosp.phone}}</a>
+      </p>
+      <p class="services-icon"><i class="fas fa-heartbeat"></i> <span> Services</span></p>
     </div>
   </li>
 </ul>

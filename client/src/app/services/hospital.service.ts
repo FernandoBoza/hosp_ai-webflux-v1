@@ -15,7 +15,22 @@ export class HospitalService {
   private hospitalApi: string = `${this.baseUrl}/hospitals/v1/hosp/`;
   public name: string;
 
-  getHospitals(): Observable<Hospital[]> {
+  public lat: number;
+  public lng: number;
+
+  public setCord(lat, lng){
+    this.lat = lat;
+    this.lng = lng;
+  }
+
+  public getCord(){
+    return {
+      "lat" : this.lat,
+      "lng" : this.lng
+    }
+  }
+
+  public getHospitals(): Observable<Hospital[]> {
     return this.http.get<Hospital[]>(this.hospitalApi);
   }
 
