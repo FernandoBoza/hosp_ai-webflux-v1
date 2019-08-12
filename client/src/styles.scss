@@ -1,5 +1,5 @@
 @import "app/scss/reset";
-@import url("https://fonts.googleapis.com/css?family=Raleway:400,500&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500&display=swap');
 
 @font-face {
   font-family: "League Spartan Bold";
@@ -9,7 +9,7 @@
 }
 
 $font_one: "League Spartan Bold";
-$font_two: "Raleway";
+$font_two: "Montserrat";
 $blue: #0698ff;
 
 body {
@@ -20,6 +20,12 @@ body {
   * {
     box-sizing: border-box;
     font-family: $font_two, sans-serif;
+    font-weight: 100;
+  }
+
+  a {
+    color: $blue;
+    text-decoration: none;
   }
 }
 
@@ -95,9 +101,10 @@ p {
     transition: max-height 0.6s, opacity 0.6s, margin-bottom 0.6s;
     margin-bottom: 2rem;
     &.hide {
-      max-height: 0;
       opacity: 0;
+      max-height: 0;
       margin-bottom: 0rem;
+      pointer-events: none;
     }
   }
 }
@@ -192,21 +199,38 @@ section.right-col.col {
 hospital-results {
   margin-top: 1.4rem;
   display: block;
+  height: 65vh;
+  overflow: scroll;
 
   li {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-gap: 1rem;
     color: $blue;
+    display: grid;
+    padding: 1rem;
+    grid-gap: 1rem;
+    border-radius: 4px;
+    transition: background .4s;
+    grid-template-columns: auto 1fr;
+
+    &.selected,
+    &:hover {
+      background: #e5f4fb;
+    }
 
     i.fas.fa-hospital {
       align-self: center;
+    }
+
+    p {
+      line-height: 1.5;
     }
   }
 
   .services-icon {
     color: red;
-    cursor: pointer;
+
+    span {
+      cursor: pointer;
+    }
   }
 }
 

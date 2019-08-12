@@ -29,12 +29,14 @@
       </div>
     </div> -->
 
-    <hospital-results></hospital-results>
+    <hospital-results *ngIf="searchActive" [results]="hospitals"></hospital-results>
 
   </section>
   <section class="right-col col">
-    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="15">
+    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="12">
       <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+
+<!--      <agm-marker *ngFor="let hosp of hospitals" [latitude]="" [longitude]="lng"></agm-marker>-->
     </agm-map>
   </section>
 </section>
