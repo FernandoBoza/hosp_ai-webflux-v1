@@ -28,10 +28,6 @@ export class HospitalResultsComponent {
     return this.http.get(hospitalCord);
   }
 
-  public setCord(lat, lng) {
-    return this.hs.setCord(lat, lng);
-  }
-
   public selectHosp(address, index) {
     this.selected = index;
     this.fetchCordFromAddress(address).subscribe(result => {
@@ -39,5 +35,14 @@ export class HospitalResultsComponent {
       this.setCord(lat, lng)
     });
   }
+
+  public setCord(lat, lng) {
+    return this.hs.setCord(lat, lng);
+  }
+
+  // public selectHosp(hosp, index) {
+  //   this.selected = index;
+  //   this.setCord(hosp.lat, hosp.lng)
+  // }
 
 }
