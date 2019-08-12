@@ -27,7 +27,6 @@ public class HospitalController {
 
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<Hospital> createHospital(@RequestBody Mono<Hospital> hospital) {
-        System.out.println(hospitalService.createHospital(hospital));
         return hospitalService.createHospital(hospital);
     }
 

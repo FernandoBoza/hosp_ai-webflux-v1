@@ -211,6 +211,7 @@ hospital-results {
     transition: background .4s;
     grid-template-columns: auto 1fr;
 
+    &.selected,
     &:hover {
       background: #e5f4fb;
     }

@@ -9,11 +9,13 @@ import {HospitalService} from "../../services/hospital.service";
   templateUrl: './hospital-results.component.html',
   styleUrls: ['./hospital-results.component.scss']
 })
-export class HospitalResultsComponent  {
+export class HospitalResultsComponent {
 
-  constructor(private http: HttpClient, private hs: HospitalService) { }
+  constructor(private http: HttpClient, private hs: HospitalService) {
+  }
 
   @Input() results;
+  public selected: number = -1;
 
 
   public fetchCordFromAddress(address) {
@@ -26,13 +28,14 @@ export class HospitalResultsComponent  {
     return this.http.get(hospitalCord);
   }
 
-  public setCord(lat, lng){
+  public setCord(lat, lng) {
     return this.hs.setCord(lat, lng);
   }
 
-  public selectHosp(address) {
+  public selectHosp(address, index) {
+    this.selected = index;
     this.fetchCordFromAddress(address).subscribe(result => {
-      let {lat, lng} = result.results[0].geometry.location;
+      let {lat, lng} = result['results'][0].geometry.location;
       this.setCord(lat, lng)
     });
   }

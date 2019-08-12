@@ -13,6 +13,8 @@ public class Hospital {
     private String zipcode;
     private String city;
     private String state;
+    private int lat;
+    private int lng;
     private List<Service> services;
 
     @Id
@@ -21,13 +23,15 @@ public class Hospital {
     public Hospital() {
     }
 
-    public Hospital(String name, String address, String phone, String zipcode, String city, String state) {
+    public Hospital(String name, String address, String phone, String zipcode, String city, String state, int lat, int lng) {
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.zipcode = zipcode;
         this.city = city;
         this.state = state;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     //    name Getter and Setter
@@ -85,6 +89,22 @@ public class Hospital {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public int getLat() {
+        return lat;
+    }
+
+    public void setLat(int lat) {
+        this.lat = lat;
+    }
+
+    public int getLng() {
+        return lng;
+    }
+
+    public void setLng(int lng) {
+        this.lng = lng;
     }
 
     public String getId() {

@@ -1,5 +1,5 @@
 <ul>
-  <li *ngFor="let hosp of results" (click)="selectHosp(hosp)">
+  <li *ngFor="let hosp of results, let index = index" (click)="selectHosp(hosp, index)" [class.selected]="selected == index">
     <i class="fas fa-hospital"></i>
     <div>
       <h5 class="title">{{hosp.name}}</h5>
@@ -11,3 +11,4 @@
     </div>
   </li>
 </ul>
+

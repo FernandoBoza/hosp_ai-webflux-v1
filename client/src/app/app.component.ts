@@ -31,10 +31,15 @@ export class AppComponent {
     let reg = /^\d+$/;
 
     if (reg.test(input)) {
+      this.getCordFromZipcode(input);
       this.getAllHospital();
     } else {
       console.log('service');
     }
+  }
+
+  public getCordFromZipcode(search){
+    return this.hs.getCordFromZipcode(search)
   }
 
 
