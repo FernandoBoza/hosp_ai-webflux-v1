@@ -1,29 +1,49 @@
 package com.fernandoboza.hospapi.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.GeocodingResult;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.IOException;
 import java.util.List;
 
 @Document // Identifies this class as domain object to be persisted to mongodb
 public class Hospital {
+
+    private double createLatCord(String address, String  city , String state , String zipcode) throws InterruptedException, ApiException, IOException {
+        GeoApiContext context = new GeoApiContext.Builder().apiKey("AIzaSyB7XZM9ZU0jM3SAnFxfLes_8OXOQ0ugI9I").build();
+        GeocodingResult[] results = GeocodingApi.geocode(context, address + city + state + zipcode).await();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return results[0].geometry.location.lat;
+    }
+    private double createLngCord(String address, String  city , String state , String zipcode) throws InterruptedException, ApiException, IOException {
+        GeoApiContext context = new GeoApiContext.Builder().apiKey("AIzaSyB7XZM9ZU0jM3SAnFxfLes_8OXOQ0ugI9I").build();
+        GeocodingResult[] results = GeocodingApi.geocode(context, address + city + state + zipcode).await();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return results[0].geometry.location.lat;
+    }
     private String name;
     private String address;
     private String phone;
     private String zipcode;
     private String city;
     private String state;
-    private int lat;
-    private int lng;
+    private double lat = createLatCord(name,address,city,state);
+    private double lng = createLngCord(name,address,city,state);
     private List<Service> services;
 
     @Id
     private String id;
 
-    public Hospital() {
+    public Hospital() throws InterruptedException, ApiException, IOException {
     }
 
-    public Hospital(String name, String address, String phone, String zipcode, String city, String state, int lat, int lng) {
+    public Hospital(String name, String address, String phone, String zipcode, String city, String state, double lat, double lng) throws InterruptedException, ApiException, IOException {
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -91,19 +111,19 @@ public class Hospital {
         this.state = state;
     }
 
-    public int getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(int lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public int getLng() {
+    public double getLng() {
         return lng;
     }
 
-    public void setLng(int lng) {
+    public void setLng(double lng) {
         this.lng = lng;
     }
 
