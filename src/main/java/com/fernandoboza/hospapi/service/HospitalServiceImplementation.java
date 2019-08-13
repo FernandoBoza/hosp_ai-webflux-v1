@@ -36,16 +36,15 @@ public class HospitalServiceImplementation implements HospitalService {
 
     @Override
     public Mono<Hospital> createHospital(Mono<Hospital> hospitalMono) {
-        return hospitalMono.flatMap(hosp ->
-                {
-                    try {
-                        return hosp.createLatCord(hosp);
-                    } catch (InterruptedException | ApiException | IOException e) {
-                        e.printStackTrace();
-                    }
-                    return Mono.just(hosp);
-                }
-        );
+        return hospitalMono.flatMap(hosp -> {
+            try {
+                return reactiveMongoOperations.save(
+                        hosp.createLatCord(hosp));
+            } catch (InterruptedException | ApiException | IOException e) {
+                e.printStackTrace();
+            }
+            return Mono.just(hosp);
+        });
     }
 
     @Override
@@ -64,7 +63,7 @@ public class HospitalServiceImplementation implements HospitalService {
     public Mono<Boolean> deleteHospital(String id) {
         return reactiveMongoOperations.remove(
                 Query.query(Criteria.where("id").is(id)), Hospital.class)
-        .flatMap(deleteResult -> Mono.just(deleteResult.wasAcknowledged()));
+                .flatMap(deleteResult -> Mono.just(deleteResult.wasAcknowledged()));
     }
 
     @Override
