@@ -1,8 +1,14 @@
 package com.fernandoboza.hospapi.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
+import com.google.maps.model.GeocodingResult;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,12 +16,12 @@ import java.util.List;
 @Document // Identifies this class as domain object to be persisted to mongodb
 public class Hospital {
 
-//    private double createLatCord(String address, String city, String state, String zipcode) throws InterruptedException, ApiException, IOException {
-//        GeoApiContext context = new GeoApiContext.Builder().apiKey("AIzaSyB7XZM9ZU0jM3SAnFxfLes_8OXOQ0ugI9I").build();
-//        GeocodingResult[] results = GeocodingApi.geocode(context, address + city + state + zipcode).await();
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//        return results[0].geometry.location.lat;
-//    }
+    private double createLatCord() throws InterruptedException, ApiException, IOException {
+        GeoApiContext context = new GeoApiContext.Builder().apiKey("AIzaSyB7XZM9ZU0jM3SAnFxfLes_8OXOQ0ugI9I").build();
+        GeocodingResult[] results = GeocodingApi.geocode(context, address + city + state + zipcode).await();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return results[0].geometry.location.lat;
+    }
 
 //    private double createLngCord(String address, String city, String state, String zipcode) throws InterruptedException, ApiException, IOException {
 //        System.out.println(address);
@@ -128,5 +134,13 @@ public class Hospital {
 
     public String getId() {
         return id;
+    }
+
+    public Mono<Hospital> createLatCord(Hospital hosp) throws InterruptedException, ApiException, IOException {
+        GeoApiContext context = new GeoApiContext.Builder().apiKey("AIzaSyB7XZM9ZU0jM3SAnFxfLes_8OXOQ0ugI9I").build();
+        GeocodingResult[] results = GeocodingApi.geocode(context, hosp.getAddress() + hosp.getCity() + hosp.getState() + hosp.getZipcode()).await();
+        hosp.setLat(results[0].geometry.location.lat);
+        hosp.setLng(results[0].geometry.location.lng);
+        return Mono.just(hosp);
     }
 }

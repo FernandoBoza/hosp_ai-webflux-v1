@@ -24,17 +24,6 @@ public class HospitalServiceImplementation implements HospitalService {
 
     private final ReactiveMongoOperations reactiveMongoOperations;
 
-    private double createLatCord(String address, String city, String state, String zipcode) throws InterruptedException, ApiException, IOException {
-        GeoApiContext context = new GeoApiContext.Builder().apiKey("AIzaSyB7XZM9ZU0jM3SAnFxfLes_8OXOQ0ugI9I").build();
-        GeocodingResult[] results = GeocodingApi.geocode(context, address + city + state + zipcode).await();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return results[0].geometry.location.lat;
-    }
-
-    private void print(Mono input){
-        System.out.println(input);
-    }
-
     @Autowired
     public HospitalServiceImplementation(ReactiveMongoOperations reactiveMongoOperations) {
         this.reactiveMongoOperations = reactiveMongoOperations;
@@ -47,22 +36,20 @@ public class HospitalServiceImplementation implements HospitalService {
 
     @Override
     public Mono<Hospital> createHospital(Mono<Hospital> hospitalMono) {
-//        Mono lats = hospitalMono.map(hospital -> {
-//            System.out.println(hospital.getName());
-//            System.out.println("hospital.getName()");
-//            return hospital.getName();
-//        });
-
-//        hospitalMono.delayUntil()
-//        print(lats);
-        return reactiveMongoOperations.save(hospitalMono);
+        return hospitalMono.flatMap(hosp ->
+                {
+                    try {
+                        return hosp.createLatCord(hosp);
+                    } catch (InterruptedException | ApiException | IOException e) {
+                        e.printStackTrace();
+                    }
+                    return Mono.just(hosp);
+                }
+        );
     }
 
     @Override
     public Mono<Hospital> updateHospital(String id, Mono<Hospital> hospitalMono) {
-//        return reactiveMongoOperations.save(hospitalMono);
-
-//    OR WE CAN SPECIFY FIELDS LIKE SO I.E UPDATE PHONE
         return hospitalMono.flatMap(hospital -> reactiveMongoOperations.findAndModify(
                 Query.query(Criteria.where("id").is(id)),
                 Update.update("phone", hospital.getPhone()), Hospital.class
