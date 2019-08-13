@@ -1,15 +1,14 @@
 package com.fernandoboza.hospapi.service;
 
 import com.fernandoboza.hospapi.model.Hospital;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
-import com.google.maps.model.GeocodingResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.GeoResult;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Service
 public class HospitalServiceImplementation implements HospitalService {
@@ -69,5 +67,16 @@ public class HospitalServiceImplementation implements HospitalService {
     @Override
     public Flux<Hospital> getAllHospitals() {
         return reactiveMongoOperations.findAll(Hospital.class);
+    }
+
+    @Override
+    public Flux<GeoResult<Hospital>> findByLocationNear(double lat, double lng, Distance distance, Mono<Hospital> hospitalMono) {
+
+        Point point = new Point(lat, lng);
+        return hospitalMono.flatMap(hospital -> reactiveMongoOperations.geoNear(NearQuery.near(point).maxDistance(distance), Hospital.class)
+                .flatMap(hospitalGeoResult -> {
+                    System.out.println(hospitalGeoResult);
+                    return ;
+                }));
     }
 }

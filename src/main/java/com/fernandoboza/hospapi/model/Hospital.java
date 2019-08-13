@@ -16,21 +16,6 @@ import java.util.List;
 @Document // Identifies this class as domain object to be persisted to mongodb
 public class Hospital {
 
-    private double createLatCord() throws InterruptedException, ApiException, IOException {
-        GeoApiContext context = new GeoApiContext.Builder().apiKey("AIzaSyB7XZM9ZU0jM3SAnFxfLes_8OXOQ0ugI9I").build();
-        GeocodingResult[] results = GeocodingApi.geocode(context, address + city + state + zipcode).await();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return results[0].geometry.location.lat;
-    }
-
-//    private double createLngCord(String address, String city, String state, String zipcode) throws InterruptedException, ApiException, IOException {
-//        System.out.println(address);
-//        GeoApiContext context = new GeoApiContext.Builder().apiKey("AIzaSyB7XZM9ZU0jM3SAnFxfLes_8OXOQ0ugI9I").build();
-//        GeocodingResult[] results = GeocodingApi.geocode(context, address + city + state + zipcode).await();
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//        return results[0].geometry.location.lng;
-//    }
-
 
     private String name;
     private String address;
