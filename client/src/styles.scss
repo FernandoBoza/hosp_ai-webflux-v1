@@ -201,6 +201,8 @@ hospital-results {
   display: block;
   height: 65vh;
   overflow: scroll;
+  padding: 0 5px;
+
 
   li {
     color: $blue;
@@ -208,9 +210,12 @@ hospital-results {
     padding: 1rem;
     grid-gap: 1rem;
     border-radius: 4px;
-    transition: background .4s;
+    transition: background .4s, box-shadow .4s;
     grid-template-columns: auto 1fr;
 
+    &.selected {
+      box-shadow: 0px 5px 5px 0px #00124626;
+    }
     &.selected,
     &:hover {
       background: #e5f4fb;
