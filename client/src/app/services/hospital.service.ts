@@ -14,8 +14,9 @@ export class HospitalService {
   private baseUrl: string = "http://localhost:8080";
   private hospitalApi: string = `${this.baseUrl}/hospitals/v1/hosp/`;
   public name: string;
-  public lat: number;
-  public lng: number;
+  public lat: number = 25.7617;
+  public lng: number = -80.1918;
+
 
   public setCord(lat, lng){
     this.lat = lat;

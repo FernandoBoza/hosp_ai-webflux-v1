@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { HospitalService } from "./services/hospital.service";
-import { Hospital } from "./models/Hospital";
+import {Component} from '@angular/core';
+import {HospitalService} from "./services/hospital.service";
+import {Hospital} from "./models/Hospital";
 
 @Component({
   selector: 'app-root',
@@ -9,18 +9,19 @@ import { Hospital } from "./models/Hospital";
 })
 export class AppComponent {
 
-  constructor(private hs: HospitalService) { }
+  constructor(private hs: HospitalService) {
+  }
 
   public search: string = "";
   public hospitals: Hospital[];
   public title: string = "Hospital services at a glance";
   public searchActive: boolean = false;
 
-  get lat(){
+  get lat() {
     return this.hs.lat;
   }
 
-  get lng(){
+  get lng() {
     return this.hs.lng;
   }
 
@@ -38,7 +39,7 @@ export class AppComponent {
     }
   }
 
-  public getCordFromZipcode(search){
+  public getCordFromZipcode(search) {
     return this.hs.getCordFromZipcode(search)
   }
 
