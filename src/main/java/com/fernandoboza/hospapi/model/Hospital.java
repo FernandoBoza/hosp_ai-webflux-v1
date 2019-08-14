@@ -1,7 +1,5 @@
 package com.fernandoboza.hospapi.model;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
@@ -128,4 +126,6 @@ public class Hospital {
         hosp.setLng(results[0].geometry.location.lng);
         return Mono.just(hosp);
     }
+
+
 }
