@@ -21,8 +21,7 @@ public class HospitalController {
         this.hospitalService = hospitalService;
     }
 
-    // Path variable and this end point returns an JSON
-    @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(path = "id/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<Hospital> getHospital(@PathVariable String id) {
         return hospitalService.getHospital(id);
     }
@@ -47,8 +46,13 @@ public class HospitalController {
         return hospitalService.getAllHospitals();
     }
 
-    @GetMapping(path = "{lat},{lng},{distance}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Flux<GeoResult<Hospital>> findByLocationNear(@PathVariable double lat, @PathVariable double lng, @PathVariable Distance distance, @RequestBody Mono<Hospital> hospital) {
-        return hospitalService.findByLocationNear(lat, lng, distance, hospital);
+    @GetMapping(path = "find/{lat}/{lng}/{distance}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Flux<GeoResult<Hospital>> findByLocationNear(@PathVariable double lat, @PathVariable double lng, @PathVariable double distance) {
+        System.out.println(lat);
+        System.out.println(distance);
+        Distance d = new Distance(distance);
+        return hospitalService.findByLocationNear(lat, lng, d);
     }
+
+
 }

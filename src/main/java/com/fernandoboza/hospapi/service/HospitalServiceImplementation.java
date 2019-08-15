@@ -5,8 +5,10 @@ import com.google.maps.errors.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResult;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.ArrayList;
+
 
 @Service
 public class HospitalServiceImplementation implements HospitalService {
@@ -69,14 +71,9 @@ public class HospitalServiceImplementation implements HospitalService {
     }
 
     @Override
-    public Flux<GeoResult<Hospital>> findByLocationNear(double lat, double lng, Distance distance, Mono<Hospital> hospitalMono) {
-        return null;
-//        Point point = new Point(lat, lng);
-//        return hospitalMono.flatMap(hospital -> reactiveMongoOperations.geoNear(NearQuery.near(point).maxDistance(distance), Hospital.class)
-//                .flatMap(hospitalGeoResult -> {
-//                    System.out.println(hospitalGeoResult);
-//                    return ;
-//                }));
+    public Flux<GeoResult<Hospital>> findByLocationNear(double lat, double lng, Distance distance) {
+        Point point = new Point(lat, lng);
+        return reactiveMongoOperations.geoNear(NearQuery.near(point).maxDistance(distance), Hospital.class);
     }
 
 }

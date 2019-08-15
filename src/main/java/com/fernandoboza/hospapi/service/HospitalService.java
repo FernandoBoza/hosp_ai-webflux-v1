@@ -14,5 +14,5 @@ public interface HospitalService {
 
     Flux<Hospital> getAllHospitals();
     Flux<Hospital> createHospital(Flux<Hospital> hospitalMono);
-    Flux<GeoResult<Hospital>> findByLocationNear(double lat, double lng, Distance distance, Mono<Hospital> hospitalMono);
+    Flux<GeoResult<Hospital>> findByLocationNear(double lat, double lng, Distance distance);
 }
