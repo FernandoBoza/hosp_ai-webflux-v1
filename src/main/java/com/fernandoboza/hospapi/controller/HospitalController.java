@@ -21,7 +21,7 @@ public class HospitalController {
         this.hospitalService = hospitalService;
     }
 
-    @GetMapping(path = "id/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<Hospital> getHospital(@PathVariable String id) {
         return hospitalService.getHospital(id);
     }
