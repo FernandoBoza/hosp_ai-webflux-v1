@@ -4,17 +4,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class Service {
+public class Procedure {
     private String name;
     private double price;
     private String hosp_id;
     @Id
     private String id;
 
-    public Service() {
+    public Procedure() {
     }
 
-    public Service(String name, double price, String hosp_id) {
+    public Procedure(String name, double price, String hosp_id) {
         this.name = name;
         this.price = price;
         this.hosp_id = hosp_id;

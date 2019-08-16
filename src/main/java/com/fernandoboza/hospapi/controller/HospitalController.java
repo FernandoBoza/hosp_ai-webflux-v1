@@ -1,6 +1,7 @@
 package com.fernandoboza.hospapi.controller;
 
 import com.fernandoboza.hospapi.model.Hospital;
+import com.fernandoboza.hospapi.model.Procedure;
 import com.fernandoboza.hospapi.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
@@ -52,6 +53,11 @@ public class HospitalController {
         System.out.println(distance);
         Distance d = new Distance(distance);
         return hospitalService.findByLocationNear(lat, lng, d);
+    }
+
+    @PutMapping(path = "{hosp_id}/services", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Mono<Hospital> createService(@RequestBody Flux<Procedure> procedureMono, @PathVariable String hosp_id) {
+        return hospitalService.createService(procedureMono, hosp_id);
     }
 
 
