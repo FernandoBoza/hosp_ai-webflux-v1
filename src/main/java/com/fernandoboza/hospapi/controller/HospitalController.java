@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @RestController // Controller and ResponseBody Annotations together
 @RequestMapping("/hospitals/v1/hosp/") // Create a base string that the endpoint is built upon
 @CrossOrigin // For DEV Angular and Spring app locally REMOVE FOR PRODUCTION
@@ -55,10 +57,14 @@ public class HospitalController {
         return hospitalService.findByLocationNear(lat, lng, d);
     }
 
-    @PutMapping(path = "{hosp_id}/services", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Mono<Hospital> createService(@RequestBody Flux<Procedure> procedureMono, @PathVariable String hosp_id) {
-        return hospitalService.createService(procedureMono, hosp_id);
+    @PutMapping(path = "{hosp_id}/procedures", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Mono<Hospital> createProcedure(@RequestBody List<Procedure> procedureMono, @PathVariable String hosp_id) {
+        return hospitalService.createProcedure(procedureMono, hosp_id);
     }
-
+    @GetMapping(path = "{hosp_id}/procedures/{proc_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Mono<Procedure> getProcedureById(@PathVariable String hosp_id, @PathVariable String proc_id) {
+        return hospitalService.getProcedureById(hosp_id, proc_id);
+    }
+//
 
 }

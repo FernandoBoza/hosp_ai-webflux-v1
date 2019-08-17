@@ -1,23 +1,20 @@
 package com.fernandoboza.hospapi.model;
 
-import org.springframework.data.annotation.Id;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Procedure {
     private String name;
     private double price;
-    private String hosp_id;
-    @Id
-    private String id;
+    private String id = new ObjectId().toHexString();
 
     public Procedure() {
     }
 
-    public Procedure(String name, double price, String hosp_id) {
+    public Procedure(String name, double price) {
         this.name = name;
         this.price = price;
-        this.hosp_id = hosp_id;
     }
 
     public String getName() {
@@ -34,14 +31,6 @@ public class Procedure {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getHosp_id() {
-        return hosp_id;
-    }
-
-    public void setHosp_id(String hosp_id) {
-        this.hosp_id = hosp_id;
     }
 
     public String getId() {

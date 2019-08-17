@@ -7,6 +7,8 @@ import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
@@ -16,6 +18,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.mongodb.client.model.Aggregates.unwind;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 
 @org.springframework.stereotype.Service
@@ -32,11 +40,14 @@ public class HospitalService {
         return reactiveMongoOperations.findById(id, Hospital.class);
     }
 
+    public Flux<Hospital> getAllHospitals() {
+        return reactiveMongoOperations.findAll(Hospital.class);
+    }
+
     public Flux<Hospital> createHospital(Flux<Hospital> hospitalMono) {
         return hospitalMono.flatMap(hosp -> {
             try {
-                return reactiveMongoOperations.save(
-                        hosp.createLatCord(hosp));
+                return reactiveMongoOperations.save(hosp.createLatCord(hosp));
             } catch (InterruptedException | ApiException | IOException e) {
                 e.printStackTrace();
             }
@@ -46,7 +57,7 @@ public class HospitalService {
 
     public Mono<Hospital> updateHospital(String id, Mono<Hospital> hospitalMono) {
         return hospitalMono.flatMap(hospital -> reactiveMongoOperations.findAndModify(
-                Query.query(Criteria.where("id").is(id)),
+                Query.query(where("id").is(id)),
                 Update.update("phone", hospital.getPhone()), Hospital.class
                 ).flatMap(results -> {
                     results.setPhone(hospital.getPhone());
@@ -55,28 +66,26 @@ public class HospitalService {
         );
     }
 
-    public Mono<Hospital> createService(Flux<Procedure> procedureMono, String hosp_id) {
-//        System.out.println(hosp_id);
-//        return getHospital(hosp_id).flatMap(hospital -> reactiveMongoOperations.findAndModify(
-//                Query.query(Criteria.where("id").is(hosp_id)),
-//                Update.update("services", hospital.getProcedure()), Hospital.class
-//        ).flatMap(results -> {
-//            results.setProcedure(procedureMono);
-//            return Mono.just(results);
-//        }));
-//        return getHospital(hosp_id).doOnNext(h -> h.setProcedure(procedureMono));
-
-        return
+    public Mono<Hospital> createProcedure(List<Procedure> procedureMono, String hosp_id) {
+        return getHospital(hosp_id).flatMap(hospital -> reactiveMongoOperations.findAndModify(
+                Query.query(where("id").is(hosp_id)),
+                Update.update("procedure", procedureMono), Hospital.class
+                ).flatMap(results -> {
+                    results.setProcedure(procedureMono);
+                    return Mono.just(results);
+                })
+        );
     }
+
+    public Mono<Procedure> getProcedureById(String hosp_id, String proc_id) {
+        return getHospital(hosp_id).flatMap(hospital -> reactiveMongoOperations.findById(proc_id, Procedure.class,"hospital"));
+    }
+
 
     public Mono<Boolean> deleteHospital(String id) {
         return reactiveMongoOperations.remove(
-                Query.query(Criteria.where("id").is(id)), Hospital.class)
+                Query.query(where("id").is(id)), Hospital.class)
                 .flatMap(deleteResult -> Mono.just(deleteResult.wasAcknowledged()));
-    }
-
-    public Flux<Hospital> getAllHospitals() {
-        return reactiveMongoOperations.findAll(Hospital.class);
     }
 
     public Flux<GeoResult<Hospital>> findByLocationNear(double lat, double lng, Distance distance) {
