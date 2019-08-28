@@ -6,15 +6,14 @@ import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.List;
 
-@Document // Identifies this class as domain object to be persisted to mongodb
+@Document
 public class Hospital {
-
-
     private String name;
     private String address;
     private String phone;
@@ -23,11 +22,10 @@ public class Hospital {
     private String state;
     private double lat;
     private double lng;
-    private List<Service> services;
-
+    private List<Procedure> procedure;
     @Id
     private String id;
-//
+
     public Hospital() {
     }
 
@@ -67,12 +65,12 @@ public class Hospital {
         this.phone = phone;
     }
 
-    public List<Service> getServices() {
-        return services;
+    public List<Procedure> getProcedure() {
+        return procedure;
     }
 
-    public void setServices(List<Service> services) {
-        this.services = services;
+    public void setProcedure(List<Procedure> procedure) {
+        this.procedure = procedure;
     }
 
     public String getZipcode() {

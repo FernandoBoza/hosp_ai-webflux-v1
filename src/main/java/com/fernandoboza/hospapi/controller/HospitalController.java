@@ -1,6 +1,7 @@
 package com.fernandoboza.hospapi.controller;
 
 import com.fernandoboza.hospapi.model.Hospital;
+import com.fernandoboza.hospapi.model.Procedure;
 import com.fernandoboza.hospapi.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
@@ -9,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @RestController // Controller and ResponseBody Annotations together
 @RequestMapping("/hospitals/v1/hosp/") // Create a base string that the endpoint is built upon
@@ -21,7 +24,6 @@ public class HospitalController {
         this.hospitalService = hospitalService;
     }
 
-    // Path variable and this end point returns an JSON
     @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<Hospital> getHospital(@PathVariable String id) {
         return hospitalService.getHospital(id);
@@ -47,8 +49,22 @@ public class HospitalController {
         return hospitalService.getAllHospitals();
     }
 
-    @GetMapping(path = "{lat},{lng},{distance}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Flux<GeoResult<Hospital>> findByLocationNear(@PathVariable double lat, @PathVariable double lng, @PathVariable Distance distance, @RequestBody Mono<Hospital> hospital) {
-        return hospitalService.findByLocationNear(lat, lng, distance, hospital);
+    @GetMapping(path = "find/{lat}/{lng}/{distance}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Flux<GeoResult<Hospital>> findByLocationNear(@PathVariable double lat, @PathVariable double lng, @PathVariable double distance) {
+        System.out.println(lat);
+        System.out.println(distance);
+        Distance d = new Distance(distance);
+        return hospitalService.findByLocationNear(lat, lng, d);
     }
+
+    @PutMapping(path = "{hosp_id}/procedures", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Mono<Hospital> createProcedure(@RequestBody List<Procedure> procedureMono, @PathVariable String hosp_id) {
+        return hospitalService.createProcedure(procedureMono, hosp_id);
+    }
+    @GetMapping(path = "{hosp_id}/procedures/{proc_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Mono<Procedure> getProcedureById(@PathVariable String hosp_id, @PathVariable String proc_id) {
+        return hospitalService.getProcedureById(hosp_id, proc_id);
+    }
+//
+
 }
